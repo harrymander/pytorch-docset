@@ -22,8 +22,8 @@ jobs:
         run: |
           mv docs/requirements.txt .
           echo "torch==${{ env.PYTORCH_VERSION }}" >> requirements.txt
-          echo "doc2dash==3.2.1 >> requirements.txt
-          echo "numpy==1.26.4 >> requirements.txt
+          echo "doc2dash==3.2.1" >> requirements.txt
+          echo "numpy==1.26.4" >> requirements.txt
           cat requirements.txt
       - name: Install python dependencies
         run: pip install -r requirements.txt
