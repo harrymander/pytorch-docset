@@ -18,11 +18,12 @@ jobs:
         with:
           python-version: 3.12
           cache: pip
-      - name: Export dependencies
+      - name: Configure Python dependencies
         run: |
           mv docs/requirements.txt .
           echo "torch==${{ env.PYTORCH_VERSION }}" >> requirements.txt
           echo "doc2dash==${{ env.PYTORCH_VERSION }}" >> requirements.txt
+          cat requirements.txt
       - name: Install python dependencies
         run: pip install -r requirements.txt
       - name: Set up Node
