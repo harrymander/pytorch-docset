@@ -47,10 +47,13 @@ jobs:
       - name: Compile docset
         env:
           SPHINXOPTS: "-j auto -WT"
-        run: make -C pytorch/docs docset
+        run: |
+          make -C pytorch/docs docset
+          mkdir output
+          mv pytorch/docs/PyTorch.docset output
       - name: Upload docset
         uses: actions/upload-artifact@v4
         with:
           name: pytorch-docset
-          path: pytorch/docs/PyTorch.docset
+          path: output
           if-no-files-found: error
