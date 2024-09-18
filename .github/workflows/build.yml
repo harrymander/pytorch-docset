@@ -1,7 +1,7 @@
 name: Build docset
 on:
   push:
-    branches: [main, snrf-time-restrict]
+    branches: [main]
 jobs:
   build:
     env:
@@ -40,4 +40,3 @@ jobs:
           name: pytorch-docset
           path: docs/PyTorch.docset
           if-no-files-found: error
-
