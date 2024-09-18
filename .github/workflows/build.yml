@@ -30,7 +30,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Install katex
+      - name: Install KaTeX
         run: npm install --global katex
       - name: Compile docset
         run: make -C docs docset
