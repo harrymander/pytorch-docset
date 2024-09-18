@@ -1,0 +1,42 @@
+name: Build docset
+on:
+  push:
+    branches: [main, snrf-time-restrict]
+jobs:
+  build:
+    env:
+      PYTORCH_VERSION: "2.4.1"
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout pytorch
+        uses: actions/checkout@v4
+        with:
+          repository: pytorch/pytorch
+          ref: v${{ env.PYTORCH_VERSION }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+          cache: pip
+      - name: Export dependencies
+        run: |
+          mv docs/requirements.txt .
+          echo "torch==${{ env.PYTORCH_VERSION }}" >> requirements.txt
+          echo "doc2dash==${{ env.PYTORCH_VERSION }}" >> requirements.txt
+      - name: Install python dependencies
+        run: pip install -r requirements.txt
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install katex
+        run: npm install --global katex
+      - name: Compile docset
+        run: make -C docs docset
+      - name: Upload docset
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytorch-docset
+          path: docs/PyTorch.docset
+          if-no-files-found: error
+
