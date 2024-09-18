@@ -24,11 +24,6 @@ jobs:
           for i in $(ls ../patches/*.patch); do
             git am "$i"
           done
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-          cache: pip
       - name: Configure Python dependencies
         run: |
           mv pytorch/docs/requirements.txt .
@@ -36,6 +31,11 @@ jobs:
           echo "doc2dash==3.1.0" >> requirements.txt
           echo "numpy==1.26.4" >> requirements.txt
           cat requirements.txt
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
       - name: Install python dependencies
         run: pip install -r requirements.txt
       - name: Set up Node
