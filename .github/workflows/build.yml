@@ -37,9 +37,12 @@ jobs:
         env:
           SPHINXOPTS: "-j auto -WT"
         run: make -C docs docset
+      - name: Zip docset
+        working-directory: docs
+        run: zip -r PyTorch.docset.zip PyTorch.docset
       - name: Upload docset
         uses: actions/upload-artifact@v4
         with:
           name: pytorch-docset
-          path: docs/PyTorch.docset
+          path: docs/PyTorch.docset.zip
           if-no-files-found: error
