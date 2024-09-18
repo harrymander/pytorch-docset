@@ -8,11 +8,22 @@ jobs:
       PYTORCH_VERSION: "2.4.1"
     runs-on: ubuntu-22.04
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
       - name: Checkout pytorch
         uses: actions/checkout@v4
         with:
           repository: pytorch/pytorch
           ref: v${{ env.PYTORCH_VERSION }}
+          path: pytorch
+      - name: Apply patches to pytorch repository
+        working-directory: pytorch
+        run: |
+          git config user.name 'GitHub Actions'
+          git config user.email '<>'
+          for i in $(ls ../patches/*.patch); do
+            git am "$i"
+          done
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -20,7 +31,7 @@ jobs:
           cache: pip
       - name: Configure Python dependencies
         run: |
-          mv docs/requirements.txt .
+          mv pytorch/docs/requirements.txt .
           echo "torch==${{ env.PYTORCH_VERSION }}" >> requirements.txt
           echo "doc2dash==3.1.0" >> requirements.txt
           echo "numpy==1.26.4" >> requirements.txt
@@ -36,13 +47,10 @@ jobs:
       - name: Compile docset
         env:
           SPHINXOPTS: "-j auto -WT"
-        run: make -C docs docset
-      - name: Zip docset
-        working-directory: docs
-        run: zip -r PyTorch.docset.zip PyTorch.docset
+        run: make -C pytorch/docs docset
       - name: Upload docset
         uses: actions/upload-artifact@v4
         with:
           name: pytorch-docset
-          path: docs/PyTorch.docset.zip
+          path: pytorch/docs/PyTorch.docset
           if-no-files-found: error

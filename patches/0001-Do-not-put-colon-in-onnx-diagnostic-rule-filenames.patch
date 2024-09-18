@@ -1,0 +1,25 @@
+From 1df5ed83fd86a4582fee75368fc0621c040dcf6d Mon Sep 17 00:00:00 2001
+From: Harry Mander <harry.mander@pg.canterbury.ac.nz>
+Date: Wed, 18 Sep 2024 18:51:00 +1200
+Subject: [PATCH] Do not put colon in onnx diagnostic rule filenames
+
+---
+ .../scripts/onnx/build_onnx_dynamo_diagnostics_rules_md.py      | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/docs/source/scripts/onnx/build_onnx_dynamo_diagnostics_rules_md.py b/docs/source/scripts/onnx/build_onnx_dynamo_diagnostics_rules_md.py
+index b807b483d6..2361168587 100644
+--- a/docs/source/scripts/onnx/build_onnx_dynamo_diagnostics_rules_md.py
++++ b/docs/source/scripts/onnx/build_onnx_dynamo_diagnostics_rules_md.py
+@@ -16,7 +16,7 @@ def gen_docs(out_dir: str):
+             # Only generate docs for `dynamo_export` rules. Excluding rules for TorchScript
+             # ONNX exporter.
+             continue
+-        title = f"{rule.id}:{rule.name}"
++        title = f"{rule.id} - {rule.name}"
+         full_description_markdown = rule.full_description_markdown
+         assert (
+             full_description_markdown is not None
+-- 
+2.34.1
+
